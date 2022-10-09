@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
-const productionUrl =
-  "mongodb+srv://amitnishad:amit@cluster0.iyehy6v.mongodb.net/?retryWrites=true&w=majority";
+const productionUrl = process.env.MONGODB_URL_PRODUCTION;
 const localUrl = process.env.MONGODB_URL;
 mongoose
   .connect(productionUrl, {

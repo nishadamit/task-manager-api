@@ -3,7 +3,7 @@ const multer = require("multer");
 const sharp = require("sharp");
 const User = require("../models/user");
 const auth = require("../middleware/auth");
-// const { sendWelcomeEmail, sendCancelationEmail } = require("../emails/account");
+const { sendWelcomeEmail, sendCancelationEmail } = require("../emails/account");
 const upload = multer({
   // dest: "avatars",
   limits: {
@@ -21,7 +21,7 @@ router.post("/users", async (req, res) => {
   const user = new User(req.body);
   try {
     const savedUser = await user.save();
-    // sendWelcomeEmail(savedUser.email, savedUser.name);
+    sendWelcomeEmail(savedUser.email, savedUser.name);
     const token = await savedUser.generateAuthToken();
     res.status(201).send({ user: savedUser, token });
   } catch (error) {
@@ -91,7 +91,7 @@ router.patch("/users/me", auth, async (req, res) => {
 router.delete("/users/me", auth, async (req, res) => {
   try {
     await req.user.remove();
-    // sendCancelationEmail(req.user.email, req.user.name);
+    sendCancelationEmail(req.user.email, req.user.name);
     res.send(req.user);
   } catch (error) {
     res.status(500).send(error);
